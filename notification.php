@@ -1,10 +1,18 @@
 <?php
-    $data = json_decode(file_get_contents("config.json"), true);
-    const HOST = $data["host"];
-    const USER = $data["user"];
-    const PASSWORD = $data["password"];
-    const DB = $data["db"];
-    const ACCESS_TOKEN = $data["access_token"];
+  $data = [
+    "host" => getenv("DB_HOST"),
+    "user" => getenv("DB_USER"),
+    "password" => getenv("DB_PASSWORD"),
+    "db" => getenv("DB_NAME"),
+    "access_token" => getenv("ACCESS_TOKEN")
+];
+
+const HOST = $data["host"];
+const USER = $data["user"];
+const PASSWORD = $data["password"];
+const DB = $data["db"];
+const ACCESS_TOKEN = $data["access_token"];
+
 
    if ($_SERVER["REQUEST_METHOD"] != "POST") {
         http_response_code(500);
