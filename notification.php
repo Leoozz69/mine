@@ -1,18 +1,10 @@
 <?php
 // Carregar as informações de configuração do banco de dados e do token
-$config = [
-    "host" => "127.0.0.1",
-    "user" => "root",
-    "password" => "leo12345",
-    "db" => "leozada",
-    "access_token" => "APP_USR-8910149099291533-100422-44cd84d501e0b6c29a9c331bfe0c99da-558785318"
-];
-
-const HOST = "127.0.0.1";
-const USER = "root";
-const PASSWORD = "leo12345";
-const DB = "leozada";
-const ACCESS_TOKEN = "APP_USR-8910149099291533-100422-44cd84d501e0b6c29a9c331bfe0c99da-558785318";
+$host = getenv('DB_HOST');
+$user = getenv('DB_USER');
+$password = getenv('DB_PASSWORD');
+$db = getenv('DB_NAME');
+$accessToken = getenv('ACCESS_TOKEN');
 
 // Verifica se a requisição é POST
 if ($_SERVER["REQUEST_METHOD"] != "POST") {
@@ -50,7 +42,7 @@ curl_setopt_array($curl, array(
     CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
     CURLOPT_CUSTOMREQUEST => 'GET',
     CURLOPT_HTTPHEADER => array(
-        'Authorization: Bearer ' . ACCESS_TOKEN
+        'Authorization: Bearer ' . $accessToken
     ),
 ));
 
@@ -61,7 +53,7 @@ $payment = json_decode($response, true);
 
 if ($payment["status"] === "approved") {
     // Conecta ao banco de dados MySQL
-    $conn = new mysqli(HOST, USER, PASSWORD, DB);
+    $conn = new mysqli($host, $user, $password, $db);
 
     if ($conn->connect_error) {
         http_response_code(500);
